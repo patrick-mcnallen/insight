@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Device Status Dashboard</title>
+    <style>
+        .container {
+            border: 2px solid #333;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .instructions {
+            font-size: 0.9em;
+            color: #666;
+        }
+        .agent-item { cursor: pointer; color: #0056b3; text-decoration: underline; margin: 5px 0; }
+        .device-item { cursor: pointer; margin-bottom: 10px; }
+        .device-status { font-weight: bold; margin-left: 10px; }
+        .online { color: darkgreen; }
+        .offline { color: darkgoldenrod; }
+        .down { color: darkred; }
+        .unknown { color: darkgray; }
+        .error { color: red; }
+        .device-details { margin-left: 20px; font-size: 0.9em; color: #333; }
+        .footer {
+            margin-top: 20px;
+            font-size: 0.85em;
+            color: #555;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- Container with dark grey frame around header and agent list -->
+    <div class="container">
+        <div class="header">
+            <h1>Device Status Dashboard</h1>
+            <span class="instructions">Explore agent and device details by selecting each item.</span>
+        </div>
+        <div id="agents-list"></div>
+    </div>
+    
+    <div id="devices-list"></div>
+
+    <!-- Footer displaying last API call time -->
+    <div class="footer" id="last-api-call">Last API call: Loading...</div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Domotz Data Viewer</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1, h2, h3 { color: #333; }
+        ul { list-style-type: none; padding: 0; }
+        li { margin-bottom: 10px; cursor: pointer; }
+        .agent-item:hover { background-color: #f0f0f0; }
+        #last-fetched { margin-bottom: 20px; color: gray; }
+    </style>
+</head>
+<body>
+    <h1>Domotz Agents</h1>
+    <div id="last-fetched">Last fetched: Loading...</div>
+    <ul id="agents-list"></ul>
+
+    <div id="agent-data" style="display: none;">
+        <h2>Agent Data</h2>
+
+        <h3>Devices</h3>
+        <ul id="devices-list"></ul>
+
+        <h3>Alerts</h3>
+        <ul id="alerts-list"></ul>
+    </div>
+
+    <script>
+        // Function to fetch and display all agents
+        async function fetchAgents() {
+            try {
+                const response = await fetch('/agent');
+                const data = await response.json();
+
+                // Update last fetched info
+                const lastFetchedElement = document.getElementById('last-fetched');
+                if (data.timeSinceLastFetch !== null) {
+                    lastFetchedElement.textContent = `Last fetched: ${data.timeSinceLastFetch} seconds ago`;
+                } else {
+                    lastFetchedElement.textContent = 'Last fetched: Never';
+                }
+
+                // Display agents
+                const agentsList = document.getElementById('agents-list');
+                agentsList.innerHTML = '';
+
+                data.data.forEach(agent => {
+                    const li = document.createElement('li');
+                    li.textContent = `Agent: ${agent.display_name}`;
+                    li.classList.add('agent-item');
+                    li.addEventListener('click', () => fetchAgentData(agent.id));
+                    agentsList.appendChild(li);
+                });
+            } catch (error) {
+                console.error('Error fetching agents:', error);
+            }
+        }
+
+        // Function to fetch and display devices and alerts for a selected agent
+        async function fetchAgentData(agentId) {
+            document.getElementById('agent-data').style.display = 'block';
+
+            try {
+                // Fetch devices
+                const devicesResponse = await fetch(`/agent/${agentId}/device`);
+                const devicesData = await devicesResponse.json();
+                const devicesList = document.getElementById('devices-list');
+                devicesList.innerHTML = '';
+                devicesData.data.forEach(device => {
+                    const li = document.createElement('li');
+                    li.textContent = `Device: ${device.display_name} (IP: ${device.ip})`;
+                    devicesList.appendChild(li);
+                });
+
+                // Fetch alerts
+                const alertsResponse = await fetch(`/agent/${agentId}/alert`);
+                const alertsData = await alertsResponse.json();
+                const alertsList = document.getElementById('alerts-list');
+                alertsList.innerHTML = '';
+                alertsData.data.forEach(alert => {
+                    const li = document.createElement('li');
+                    li.textContent = `Alert: ${alert.description} (Type: ${alert.alert_type})`;
+                    alertsList.appendChild(li);
+                });
+
+            } catch (error) {
+                console.error('Error fetching agent data:', error);
+            }
+        }
+
+        // Fetch agents when the page loads
+        window.onload = fetchAgents;
+    </script>
+</body>
+</html>
+

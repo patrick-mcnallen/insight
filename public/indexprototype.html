@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Device Status Dashboard Prototype</title>
+    <style>
+        body {
+            background-color: #b0b0b0;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        .container {
+            border: 4px solid #666666;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .container:first-of-type {
+            margin-top: 20px;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 1.5em;
+            margin: 0;
+        }
+
+        .instructions {
+            font-size: 0.85em;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .agent-item, .device-item {
+            cursor: pointer;
+            background-color: #e9e9e9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin: 8px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 550px;
+            box-sizing: border-box;
+            padding: 10px;
+        }
+
+        .device-name-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            flex-grow: 1;
+            margin-right: 10px;
+        }
+
+        .device-name-container span:first-child {
+            font-weight: bold;
+        }
+
+        .sorted-property {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 3px;
+        }
+
+        .device-status-header {
+            cursor: pointer;
+            padding: 10px;
+            background-color: #666;
+            color: white;
+            border-radius: 5px;
+            font-weight: bold;
+            margin: 8px 0;
+            text-align: left;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .device-status-container {
+            display: none;
+            margin-top: 8px;
+        }
+
+        .device-status-header.active + .device-status-container {
+            display: block;
+        }
+
+        .device-item-expanded {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .device-details {
+            margin-top: 10px;
+            padding-left: 10px;
+            border-left: 2px solid #ddd;
+        }
+
+        /* Status indicator styling */
+        .device-status {
+            font-weight: bold;
+            font-size: 0.8em;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            text-align: center;
+            min-width: 70px;
+            display: inline-block;
+            margin-left: 10px;
+            box-shadow: 
+                inset 0px 2px 2px rgba(255, 255, 255, 0.5),
+                0px 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Status color coding */
+        .online {
+            background: linear-gradient(to right, #66cc66, darkgreen); /* Light green to dark green */
+        }
+        .offline {
+            background: linear-gradient(to right, #ffdb66, darkgoldenrod); /* Light yellow to dark goldenrod */
+        }
+        .down {
+            background: linear-gradient(to right, #ff6666, darkred); /* Light red to dark red */
+        }
+        .hidden {
+            background: linear-gradient(to right, #cccccc, darkgray); /* Light gray to dark gray */
+        }
+        .error {
+            background: linear-gradient(to right, #ff6666, red); /* Light red to red */
+        }
+
+        /* Footer styling for last API call info */
+        .footer {
+            margin-top: 20px;
+            font-size: 0.85em;
+            color: #555;
+            text-align: center;
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+            margin-top: 20px;
+        }
+
+        /* Placeholder styling */
+        #devices-list .placeholder {
+            color: #777;
+            font-size: 1em;
+            padding: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <img src="logo.png" alt="Mechdyne Logo" class="logo">
+    <div class="container">
+        <div class="header">
+            <h1>Device Status Dashboard</h1>
+        </div>
+        <div class="instructions">Explore agent and device details by selecting each item.</div>
+        <div id="agents-list"></div>
+        <div class="footer" id="last-api-call">Last API call: Loading...</div>
+    </div>
+    <div id="devices-list" class="container">
+        <div class="placeholder">Select Agent Above</div>
+    </div>
+    <script src="prototype-script.js"></script>
+</body>
+</html>
